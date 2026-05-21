@@ -1,0 +1,76 @@
+{
+  "credenciais_de_teste": {
+    "admin": {
+      "email": "admin@vivabem.com",
+      "senha": "admin123",
+      "tipo": "ADMIN",
+      "nome": "Carlos Silva"
+    },
+    "medicos": [
+      {
+        "email": "ana.santos@vivabem.com",
+        "senha": "medico123",
+        "tipo": "DOCTOR",
+        "nome": "Dra. Ana Beatriz Santos",
+        "especialidade": "Cardiologia"
+      },
+      {
+        "email": "roberto.mendes@vivabem.com",
+        "senha": "medico123",
+        "tipo": "DOCTOR",
+        "nome": "Dr. Roberto Mendes",
+        "especialidade": "Ortopedia"
+      },
+      {
+        "email": "mariana.costa@vivabem.com",
+        "senha": "medico123",
+        "tipo": "DOCTOR",
+        "nome": "Dra. Mariana Costa",
+        "especialidade": "Pneumologia"
+      }
+    ],
+    "pacientes": [
+      {
+        "email": "joao.oliveira@email.com",
+        "senha": "paciente123",
+        "tipo": "PATIENT",
+        "nome": "Joao Pedro Oliveira"
+      },
+      {
+        "email": "maria.lima@email.com",
+        "senha": "paciente123",
+        "tipo": "PATIENT",
+        "nome": "Maria Fernanda Lima"
+      },
+      {
+        "email": "carlos.souza@email.com",
+        "senha": "paciente123",
+        "tipo": "PATIENT",
+        "nome": "Carlos Eduardo Souza"
+      },
+      {
+        "email": "ana.rodrigues@email.com",
+        "senha": "paciente123",
+        "tipo": "PATIENT",
+        "nome": "Ana Clara Rodrigues"
+      },
+      {
+        "email": "pedro.almeida@email.com",
+        "senha": "paciente123",
+        "tipo": "PATIENT",
+        "nome": "Pedro Henrique Almeida"
+      },
+      {
+        "email": "beatriz.ferreira@email.com",
+        "senha": "paciente123",
+        "tipo": "PATIENT",
+        "nome": "Beatriz Santos Ferreira"
+      }
+    ]
+  },
+  "instrucoes": {
+    "admin": "Acesso total ao sistema. Pode gerenciar usuarios, medicos, pacientes e configuracoes.",
+    "medico": "Acesso ao dashboard medico. Pode ver e gerenciar seus pacientes e criar registros medicos.",
+    "paciente": "Acesso ao seu proprio painel de saude. Pode visualizar seus registros e recomendacoes."
+  }
+}
