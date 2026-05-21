@@ -1,7 +1,7 @@
 "use client"
 
 import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { persist, createJSONStorage } from "zustand/middleware"
 
 export interface SystemSettings {
   // General
@@ -31,6 +31,8 @@ interface SystemSettingsStore {
   updateSettings: (updates: Partial<SystemSettings>) => void
   resetSettings: () => void
   isMaintenanceMode: () => boolean
+  _hasHydrated: boolean
+  setHasHydrated: (state: boolean) => void
 }
 
 const defaultSettings: SystemSettings = {
@@ -53,6 +55,11 @@ export const useSystemSettings = create<SystemSettingsStore>()(
   persist(
     (set, get) => ({
       settings: defaultSettings,
+      _hasHydrated: false,
+      
+      setHasHydrated: (state) => {
+        set({ _hasHydrated: state })
+      },
       
       updateSettings: (updates) => {
         set((state) => ({
@@ -70,6 +77,19 @@ export const useSystemSettings = create<SystemSettingsStore>()(
     }),
     {
       name: "vivabem-system-settings",
+      storage: createJSONStorage(() => {
+        if (typeof window !== "undefined") {
+          return localStorage
+        }
+        return {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        }
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true)
+      },
     }
   )
 )

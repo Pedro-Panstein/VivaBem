@@ -1,13 +1,15 @@
 'use client';
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { User, UserType } from '@/types';
 import { useDataStore } from './use-data-store';
 
 interface AuthStore {
   user: User | null;
   isAuthenticated: boolean;
+  _hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
   login: (email: string, senha: string) => { success: boolean; error?: string };
   logout: () => void;
   isUserType: (tipo: UserType) => boolean;
@@ -18,6 +20,11 @@ export const useAuth = create<AuthStore>()(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
+      _hasHydrated: false,
+      
+      setHasHydrated: (state) => {
+        set({ _hasHydrated: state });
+      },
       
       login: (email: string, senha: string) => {
         // Initialize data store if needed
@@ -53,6 +60,19 @@ export const useAuth = create<AuthStore>()(
     }),
     {
       name: 'vivabem-auth',
+      storage: createJSONStorage(() => {
+        if (typeof window !== 'undefined') {
+          return localStorage;
+        }
+        return {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        };
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

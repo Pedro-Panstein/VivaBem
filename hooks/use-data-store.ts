@@ -1,7 +1,7 @@
 'use client';
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Admin, Doctor, Patient, MedicalRecord, User, UserType } from '@/types';
 import { admins as initialAdmins, doctors as initialDoctors, patients as initialPatients, medicalRecords as initialRecords } from '@/data/mock-data';
 
@@ -11,6 +11,8 @@ interface DataStore {
   patients: Patient[];
   medicalRecords: MedicalRecord[];
   initialized: boolean;
+  _hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
   
   // Initialize with mock data
   initializeData: () => void;
@@ -58,6 +60,11 @@ export const useDataStore = create<DataStore>()(
       patients: [],
       medicalRecords: [],
       initialized: false,
+      _hasHydrated: false,
+      
+      setHasHydrated: (state) => {
+        set({ _hasHydrated: state });
+      },
       
       initializeData: () => {
         const { initialized } = get();
@@ -212,6 +219,19 @@ export const useDataStore = create<DataStore>()(
     }),
     {
       name: 'vivabem-data',
+      storage: createJSONStorage(() => {
+        if (typeof window !== 'undefined') {
+          return localStorage;
+        }
+        return {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        };
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
