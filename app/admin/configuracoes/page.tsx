@@ -61,15 +61,21 @@ export default function AdminConfiguracoesPage() {
 
   // Calculate storage size on client side only
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      let total = 0
-      for (const key in localStorage) {
-        if (key.startsWith("vivabem")) {
-          total += localStorage.getItem(key)?.length || 0
+    const calculateStorageSize = () => {
+      try {
+        let total = 0
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key && key.startsWith("vivabem")) {
+            total += localStorage.getItem(key)?.length || 0
+          }
         }
+        setStorageSize((total / 1024).toFixed(2))
+      } catch {
+        setStorageSize("0.00")
       }
-      setStorageSize((total / 1024).toFixed(2))
     }
+    calculateStorageSize()
   }, [admins, doctors, patients, medicalRecords])
 
   const handleSaveSettings = async () => {

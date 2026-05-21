@@ -30,9 +30,11 @@ import {
   Mail,
   Phone,
   Users,
+  Eye,
 } from "lucide-react"
 import { useDataStore } from "@/hooks/use-data-store"
 import type { Doctor } from "@/types"
+import Link from "next/link"
 
 const especialidades = [
   "Cardiologia",
@@ -355,7 +357,17 @@ export default function AdminMedicosPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 flex gap-2">
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link href={`/admin/medicos/${doctor.id}`} className="flex-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-cyan-500/20 hover:bg-cyan-500/10"
+                    >
+                      <Eye className="mr-2 h-4 w-4" />
+                      Detalhes
+                    </Button>
+                  </Link>
                   <Button
                     variant="outline"
                     size="sm"

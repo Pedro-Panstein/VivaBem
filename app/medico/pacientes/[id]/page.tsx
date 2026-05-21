@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useState } from "react"
+import { use, useState, useEffect } from "react"
 import { DashboardLayout } from "@/components/layout/dashboard-layout"
 import { GlassCard } from "@/components/ui/glass-card"
 import { Button } from "@/components/ui/button"
@@ -76,8 +76,13 @@ const frequenciaOptions = [
 
 export default function PatientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
-  const { patients, medicalRecords, updatePatient } = useDataStore()
+  const { patients, medicalRecords, updatePatient, initializeData, initialized } = useDataStore()
   const { user } = useAuth()
+  
+  // Initialize data on mount
+  useEffect(() => {
+    initializeData()
+  }, [initializeData])
   
   const patient = patients.find((p) => p.id === id)
   const records = medicalRecords.filter((r) => r.pacienteId === id)
@@ -105,6 +110,20 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
     dataInicio: new Date().toISOString().split('T')[0],
     dataFim: "",
   })
+
+  // Show loading while data initializes
+  if (!initialized) {
+    return (
+      <DashboardLayout title="Carregando..." allowedRoles={["DOCTOR"]}>
+        <GlassCard className="p-12 text-center">
+          <div className="animate-pulse">
+            <div className="mx-auto h-12 w-12 rounded-full bg-cyan-500/20" />
+            <div className="mt-4 h-4 w-32 mx-auto rounded bg-cyan-500/20" />
+          </div>
+        </GlassCard>
+      </DashboardLayout>
+    )
+  }
 
   if (!patient) {
     return (
