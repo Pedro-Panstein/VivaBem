@@ -49,6 +49,7 @@ export default function AdminConfiguracoesPage() {
 
   // Local form state (synced with store)
   const [formSettings, setFormSettings] = useState(settings)
+  const [storageSize, setStorageSize] = useState("0.00")
 
   useEffect(() => {
     initializeData()
@@ -57,6 +58,19 @@ export default function AdminConfiguracoesPage() {
   useEffect(() => {
     setFormSettings(settings)
   }, [settings])
+
+  // Calculate storage size on client side only
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let total = 0
+      for (const key in localStorage) {
+        if (key.startsWith("vivabem")) {
+          total += localStorage.getItem(key)?.length || 0
+        }
+      }
+      setStorageSize((total / 1024).toFixed(2))
+    }
+  }, [admins, doctors, patients, medicalRecords])
 
   const handleSaveSettings = async () => {
     setIsSaving(true)
@@ -162,15 +176,7 @@ export default function AdminConfiguracoesPage() {
   const stats = {
     totalUsuarios: admins.length + doctors.length + patients.length,
     totalRegistros: medicalRecords.length,
-    tamanhoStorage: (() => {
-      let total = 0
-      for (const key in localStorage) {
-        if (key.startsWith("vivabem")) {
-          total += localStorage.getItem(key)?.length || 0
-        }
-      }
-      return (total / 1024).toFixed(2)
-    })(),
+    tamanhoStorage: storageSize,
   }
 
   return (
