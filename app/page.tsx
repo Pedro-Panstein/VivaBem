@@ -45,11 +45,10 @@ const features = [
 ]
 
 const teamMembers = [
-  { name: "Membro 1", role: "Desenvolvedor Full Stack", rm: "RM00000" },
-  { name: "Membro 2", role: "UX/UI Designer", rm: "RM00000" },
-  { name: "Membro 3", role: "Backend Developer", rm: "RM00000" },
-  { name: "Membro 4", role: "Data Analyst", rm: "RM00000" },
-  { name: "Membro 5", role: "Project Manager", rm: "RM00000" },
+  { name: "Pedro Henrique Panstein", rm: "RM567358", github: "https://github.com/Pedro-Panstein", linkedin: "https://www.linkedin.com/in/pedro-henrique-panstein-7833bb316/" },
+  { name: "Arthur Carlson de Souza Barbosa", rm: "RM567124", github: "https://github.com/arthurcarlson2", linkedin: "" },
+  { name: "Filipe Ferraz Alves", rm: "RM567793", github: "https://github.com/filipe-falves", linkedin: "https://www.linkedin.com/in/filipe-ferraz-alves-695109352/" },
+  { name: "Jorge Kenned Ferreira dos Santos", rm: "RM566644", github: "https://github.com/kennedfer", linkedin: "" },
 ]
 
 const technologies = [
@@ -506,7 +505,7 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="flex flex-wrap justify-center gap-4">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={member.name}
@@ -515,7 +514,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <GlassCard className="p-6 text-center hover:border-cyan-500/40 transition-colors">
+                <GlassCard className="p-6 text-center hover:border-cyan-500/40 transition-colors w-[300px]">
                   <div className="mx-auto mb-4 relative h-20 w-20">
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 blur-md opacity-30" />
                     <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400/20 to-blue-600/20 border border-cyan-500/30">
@@ -525,14 +524,17 @@ export default function HomePage() {
                     </div>
                   </div>
                   <h3 className="font-semibold text-foreground">{member.name}</h3>
-                  <p className="text-sm text-cyan-400">{member.role}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{member.rm}</p>
                   <div className="mt-4 flex justify-center gap-2">
                     <button className="rounded-lg p-2 text-muted-foreground hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors">
-                      <Github className="h-4 w-4" />
+                      <a href={member.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="h-4 w-4" />
+                      </a>
                     </button>
                     <button className="rounded-lg p-2 text-muted-foreground hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors">
+                      <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
                       <Linkedin className="h-4 w-4" />
+                      </a>
                     </button>
                   </div>
                 </GlassCard>

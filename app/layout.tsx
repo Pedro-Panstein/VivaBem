@@ -17,7 +17,7 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   title: 'VivaBem - Monitoramento Inteligente de Saúde',
   description: 'Sistema de monitoramento de saúde com visualização interativa do corpo humano. Acompanhe sua saúde de forma visual e compreensível.',
-  generator: 'v0.app',
+  generator: 'FIAP - PKFA',
   keywords: ['saúde', 'monitoramento', 'corpo humano', 'medicina', 'health tech'],
   authors: [{ name: 'VivaBem Team' }],
   icons: {

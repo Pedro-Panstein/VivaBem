@@ -501,7 +501,7 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
                             {frequenciaOptions.find(f => f.value === medication.frequencia)?.label || medication.frequencia}
                           </span>
                         </div>
-                        {medication.horarios.length > 0 && (
+                        {medication.horarios && medication.horarios.length > 0 && (
                           <div className="flex flex-wrap gap-2">
                             {medication.horarios.map((horario, idx) => (
                               <span key={idx} className="inline-flex rounded-full px-2 py-1 text-xs bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
