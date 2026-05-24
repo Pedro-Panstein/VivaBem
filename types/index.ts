@@ -74,6 +74,8 @@ export interface Medication {
   ativo: boolean;
 }
 
+export type PatientMedication = Medication | string;
+
 export interface Patient extends User {
   tipo: 'PATIENT';
   dataNascimento: string;
@@ -84,7 +86,7 @@ export interface Patient extends User {
   contatoEmergencia?: string;
   tipoSanguineo?: string;
   alergias?: string[];
-  medicamentos?: Medication[];
+  medicamentos?: PatientMedication[];
 }
 
 export interface Doctor extends User {

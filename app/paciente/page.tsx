@@ -317,7 +317,7 @@ export default function PacienteDashboard() {
                               key={i}
                               className="inline-flex rounded-full px-2 py-0.5 text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30"
                             >
-                              {med}
+                              {typeof med === 'string' ? med : med.nome}
                             </span>
                           ))}
                         </div>

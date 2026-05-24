@@ -142,7 +142,9 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
   }
 
   const bodyRegions = patient.regioesCorporais || []
-  const medications = patient.medicamentos || []
+  const medications = (patient.medicamentos || []) as Array<Medication | string>
+
+  const isMedicationObject = (med: Medication | string): med is Medication => typeof med !== 'string'
 
   const handleAddRegion = () => {
     if (!newRegion.condicao) return
@@ -472,90 +474,112 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
 
             {medications.length > 0 ? (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {medications.map((medication) => (
-                  <motion.div
-                    key={medication.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <GlassCard className={`p-6 ${!medication.ativo ? 'opacity-60' : ''}`}>
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${medication.ativo ? 'bg-cyan-500/20' : 'bg-gray-500/20'}`}>
-                            <Pill className={`h-6 w-6 ${medication.ativo ? 'text-cyan-400' : 'text-gray-400'}`} />
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-foreground">{medication.nome}</h4>
-                            <p className="text-sm text-muted-foreground">{medication.dosagem}</p>
-                          </div>
-                        </div>
-                        <span className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${medication.ativo ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
-                          {medication.ativo ? 'Ativo' : 'Inativo'}
-                        </span>
-                      </div>
+                {medications.map((medication) => {
+                  const isObject = isMedicationObject(medication)
+                  const medId = isObject ? medication.id : String(medication)
+                  const medName = isObject ? medication.nome : medication
+                  const medDosage = isObject ? medication.dosagem : ''
+                  const medActive = isObject ? medication.ativo : true
+                  const medFrequency = isObject ? medication.frequencia : ''
+                  const medHorarios = isObject ? medication.horarios : []
+                  const medInstructions = isObject ? medication.instrucoes : ''
+                  const medDataInicio = isObject ? medication.dataInicio : ''
+                  const medDataFim = isObject ? medication.dataFim : undefined
+                  const medPrescribedBy = isObject ? medication.prescritoPor : ''
 
-                      <div className="space-y-3 mb-4">
-                        <div className="flex items-center gap-2 text-sm">
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-foreground">
-                            {frequenciaOptions.find(f => f.value === medication.frequencia)?.label || medication.frequencia}
+                  return (
+                    <motion.div
+                      key={medId}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <GlassCard className={`p-6 ${!medActive ? 'opacity-60' : ''}`}>
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${medActive ? 'bg-cyan-500/20' : 'bg-gray-500/20'}`}>
+                              <Pill className={`h-6 w-6 ${medActive ? 'text-cyan-400' : 'text-gray-400'}`} />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-foreground">{medName}</h4>
+                              <p className="text-sm text-muted-foreground">{medDosage}</p>
+                            </div>
+                          </div>
+                          <span className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${medActive ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
+                            {medActive ? 'Ativo' : 'Inativo'}
                           </span>
                         </div>
-                        {medication.horarios && medication.horarios.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {medication.horarios.map((horario, idx) => (
-                              <span key={idx} className="inline-flex rounded-full px-2 py-1 text-xs bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                                {horario}
+
+                        <div className="space-y-3 mb-4">
+                          {medFrequency && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Clock className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-foreground">
+                                {frequenciaOptions.find(f => f.value === medFrequency)?.label || medFrequency}
                               </span>
-                            ))}
-                          </div>
-                        )}
-                        {medication.instrucoes && (
-                          <p className="text-sm text-muted-foreground">
-                            {medication.instrucoes}
-                          </p>
-                        )}
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Calendar className="h-3 w-3" />
-                          <span>Inicio: {new Date(medication.dataInicio).toLocaleDateString("pt-BR")}</span>
-                          {medication.dataFim && (
-                            <span>- Fim: {new Date(medication.dataFim).toLocaleDateString("pt-BR")}</span>
+                            </div>
+                          )}
+                          {medHorarios.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {medHorarios.map((horario, idx) => (
+                                <span key={idx} className="inline-flex rounded-full px-2 py-1 text-xs bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                                  {horario}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          {medInstructions && (
+                            <p className="text-sm text-muted-foreground">
+                              {medInstructions}
+                            </p>
+                          )}
+                          {medDataInicio && (
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <Calendar className="h-3 w-3" />
+                              <span>Inicio: {new Date(medDataInicio).toLocaleDateString("pt-BR")}</span>
+                              {medDataFim && (
+                                <span>- Fim: {new Date(medDataFim).toLocaleDateString("pt-BR")}</span>
+                              )}
+                            </div>
+                          )}
+                          {medPrescribedBy && (
+                            <p className="text-xs text-muted-foreground">
+                              Prescrito por: {medPrescribedBy}
+                            </p>
                           )}
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                          Prescrito por: {medication.prescritoPor}
-                        </p>
-                      </div>
 
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex-1 border-cyan-500/20"
-                          onClick={() => handleToggleMedicationStatus(medication.id)}
-                        >
-                          {medication.ativo ? 'Desativar' : 'Ativar'}
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-9 w-9"
-                          onClick={() => openEditMedicationDialog(medication)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-9 w-9 text-red-400"
-                          onClick={() => handleDeleteMedication(medication.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </GlassCard>
-                  </motion.div>
-                ))}
+                        {isObject && (
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1 border-cyan-500/20"
+                              onClick={() => handleToggleMedicationStatus(medication.id)}
+                            >
+                              {medication.ativo ? 'Desativar' : 'Ativar'}
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-9 w-9"
+                              onClick={() => openEditMedicationDialog(medication)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-9 w-9 text-red-400"
+                              onClick={() => handleDeleteMedication(medication.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </GlassCard>
+                    </motion.div>
+                  )
+                })}
               </div>
             ) : (
               <GlassCard className="p-12 text-center">
