@@ -1,45 +1,46 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { useDataStore } from './hooks/use-data-store'
-import { useSystemSettings } from './hooks/use-system-settings'
-import { Toaster } from './components/ui/Toaster'
-import MaintenanceScreen from './components/MaintenanceScreen'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDataStore } from './hooks/use-data-store';
+import { useSystemSettings } from './hooks/use-system-settings';
+import { Toaster } from './components/ui/Toaster';
+import MaintenanceScreen from './components/MaintenanceScreen';
 
 // Pages
-import LandingPage from './pages/Landing'
-import LoginPage from './pages/Login'
-import CadastroPage from './pages/Cadastro'
-import PacientePage from './pages/Paciente'
-import MedicoPage from './pages/Medico'
-import AdminPage from './pages/Admin'
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import PacientePage from './pages/PacientePage';
+import MedicoPage from './pages/MedicoPage';
+import AdminPage from './pages/AdminPage';
 
 // Protected Route Component
-import { useAuth } from './hooks/use-auth'
+import { useAuth } from './hooks/use-auth';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode; allowedRoles: string[] }) {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated } = useAuth();
   
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" replace />;
   }
   
-  if (user && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" replace />
+  if (user && !allowedRoles.includes(user.tipo)) {
+    // Redirect to the appropriate dashboard based on user type
+    const userType = user.tipo === 'ADMIN' ? 'admin' : user.tipo === 'DOCTOR' ? 'medico' : 'paciente';
+    return <Navigate to={`/${userType}`} replace />;
   }
   
-  return <>{children}</>
+  return <>{children}</>;
 }
 
 function App() {
-  const initializeData = useDataStore((state) => state.initializeData)
-  const { settings } = useSystemSettings()
+  const initializeData = useDataStore((state) => state.initializeData);
+  const { settings } = useSystemSettings();
 
   useEffect(() => {
-    initializeData()
-  }, [initializeData])
+    initializeData();
+  }, [initializeData]);
 
   if (settings.maintenanceMode) {
-    return <MaintenanceScreen />
+    return <MaintenanceScreen />;
   }
 
   return (
@@ -47,35 +48,36 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/cadastro" element={<CadastroPage />} />
         <Route
-          path="/paciente"
+          path="/paciente/*"
           element={
-            <ProtectedRoute allowedRoles={['paciente']}>
+            <ProtectedRoute allowedRoles={['PATIENT']}>
               <PacientePage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/medico"
+          path="/medico/*"
           element={
-            <ProtectedRoute allowedRoles={['medico']}>
+            <ProtectedRoute allowedRoles={['DOCTOR']}>
               <MedicoPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
-            <ProtectedRoute allowedRoles={['admin']}>
+            <ProtectedRoute allowedRoles={['ADMIN']}>
               <AdminPage />
             </ProtectedRoute>
           }
         />
+        {/* Redirect unknown routes to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
