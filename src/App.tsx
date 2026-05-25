@@ -22,10 +22,10 @@ function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode;
     return <Navigate to="/login" replace />;
   }
   
-  if (user && !allowedRoles.includes(user.tipo)) {
-    // Redirect to the appropriate dashboard based on user type
-    const userType = user.tipo === 'ADMIN' ? 'admin' : user.tipo === 'DOCTOR' ? 'medico' : 'paciente';
-    return <Navigate to={`/${userType}`} replace />;
+  if (user && !allowedRoles.includes(user.role)) {
+    // Redirect to the appropriate dashboard based on user role
+    const redirectPath = user.role === 'admin' ? '/admin' : user.role === 'medico' ? '/medico' : '/paciente';
+    return <Navigate to={redirectPath} replace />;
   }
   
   return <>{children}</>;
@@ -51,7 +51,7 @@ function App() {
         <Route
           path="/paciente/*"
           element={
-            <ProtectedRoute allowedRoles={['PATIENT']}>
+            <ProtectedRoute allowedRoles={['paciente']}>
               <PacientePage />
             </ProtectedRoute>
           }
@@ -59,7 +59,7 @@ function App() {
         <Route
           path="/medico/*"
           element={
-            <ProtectedRoute allowedRoles={['DOCTOR']}>
+            <ProtectedRoute allowedRoles={['medico']}>
               <MedicoPage />
             </ProtectedRoute>
           }
@@ -67,7 +67,7 @@ function App() {
         <Route
           path="/admin/*"
           element={
-            <ProtectedRoute allowedRoles={['ADMIN']}>
+            <ProtectedRoute allowedRoles={['admin']}>
               <AdminPage />
             </ProtectedRoute>
           }

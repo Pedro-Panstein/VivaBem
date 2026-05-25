@@ -30,8 +30,8 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && user) {
-      const userType = user.tipo === 'ADMIN' ? 'admin' : user.tipo === 'DOCTOR' ? 'medico' : 'paciente';
-      navigate(`/${userType}`);
+      const redirectPath = user.role === 'admin' ? '/admin' : user.role === 'medico' ? '/medico' : '/paciente';
+      navigate(redirectPath);
     }
   }, [isAuthenticated, user, navigate]);
 

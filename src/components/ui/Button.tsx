@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'gradient'
   size?: 'default' | 'sm' | 'lg' | 'icon'
   children: React.ReactNode
 }
@@ -22,6 +22,7 @@ export function Button({
     secondary: 'btn-secondary',
     ghost: 'btn-ghost',
     link: 'btn-link',
+    gradient: 'btn-gradient',
   }
   
   const sizeClasses: Record<string, string> = {

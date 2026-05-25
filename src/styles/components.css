@@ -89,6 +89,17 @@
   text-decoration: underline;
 }
 
+.btn-gradient {
+  background: linear-gradient(135deg, #06b6d4, #22c55e);
+  color: #000;
+  font-weight: 600;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #0891b2, #16a34a);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+}
+
 /* Sizes */
 .btn-default-size {
   height: 2.5rem;

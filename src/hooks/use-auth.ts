@@ -3,10 +3,15 @@ import { persist } from 'zustand/middleware'
 import type { User } from '../types'
 import { useDataStore } from './use-data-store'
 
+interface LoginResult {
+  success: boolean
+  error?: string
+}
+
 interface AuthStore {
   user: User | null
   isAuthenticated: boolean
-  login: (email: string, password: string) => Promise<boolean>
+  login: (email: string, password: string) => LoginResult
   logout: () => void
   register: (userData: Omit<User, 'id' | 'createdAt'> & { password: string }) => Promise<boolean>
 }
@@ -17,15 +22,15 @@ export const useAuth = create<AuthStore>()(
       user: null,
       isAuthenticated: false,
 
-      login: async (email: string, _password: string) => {
+      login: (email: string, _password: string): LoginResult => {
         const users = useDataStore.getState().users
-        const user = users.find((u) => u.email === email)
+        const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase())
         
         if (user) {
           set({ user, isAuthenticated: true })
-          return true
+          return { success: true }
         }
-        return false
+        return { success: false, error: 'Email ou senha invalidos' }
       },
 
       logout: () => {

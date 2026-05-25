@@ -30,18 +30,19 @@ const recentActivity = [
 ];
 
 export default function AdminPage() {
-  const { doctors, patients, medicalRecords, initializeData, getAllUsers } = useDataStore();
+  const { users, consultas, sintomas, initializeData } = useDataStore();
 
   useEffect(() => {
     initializeData();
   }, [initializeData]);
 
-  const allUsers = getAllUsers();
+  const medicos = users.filter(u => u.role === 'medico');
+  const pacientes = users.filter(u => u.role === 'paciente');
 
   const stats = [
     {
       title: 'Total de Usuarios',
-      value: allUsers.length.toString(),
+      value: users.length.toString(),
       change: '+12%',
       trend: 'up' as const,
       icon: Users,
@@ -49,7 +50,7 @@ export default function AdminPage() {
     },
     {
       title: 'Medicos Ativos',
-      value: doctors.length.toString(),
+      value: medicos.length.toString(),
       change: '+5%',
       trend: 'up' as const,
       icon: Stethoscope,
@@ -57,17 +58,17 @@ export default function AdminPage() {
     },
     {
       title: 'Pacientes',
-      value: patients.length.toString(),
+      value: pacientes.length.toString(),
       change: '+18%',
       trend: 'up' as const,
       icon: UserCheck,
       color: 'green',
     },
     {
-      title: 'Registros Medicos',
-      value: medicalRecords.length.toString(),
-      change: '-3%',
-      trend: 'down' as const,
+      title: 'Sintomas Registrados',
+      value: sintomas.length.toString(),
+      change: '+8%',
+      trend: 'up' as const,
       icon: Activity,
       color: 'purple',
     },
@@ -77,12 +78,8 @@ export default function AdminPage() {
   const maxConsultas = Math.max(...chartData.map(d => d.consultas));
 
   return (
-    <DashboardLayout
-      title="Dashboard Administrativo"
-      subtitle="Visao geral do sistema"
-      allowedRoles={['ADMIN']}
-    >
-      <div className="dashboard-content">
+    <DashboardLayout title="Dashboard Administrativo">
+      <div className="admin-content">
         {/* Stats Grid */}
         <div className="stats-grid">
           {stats.map((stat, index) => (
@@ -168,7 +165,7 @@ export default function AdminPage() {
             <GlassCard className="users-table-card">
               <div className="table-header">
                 <h3>Usuarios Recentes</h3>
-                <Link to="/admin/usuarios" className="view-all-link">
+                <Link to="/admin?tab=usuarios" className="view-all-link">
                   Ver todos
                   <ArrowUpRight size={16} />
                 </Link>
@@ -184,7 +181,7 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {allUsers.slice(0, 5).map((user) => (
+                    {users.slice(0, 5).map((user) => (
                       <tr key={user.id}>
                         <td>
                           <div className="user-cell">
@@ -197,9 +194,9 @@ export default function AdminPage() {
                         <td className="user-email">{user.email}</td>
                         <td>
                           <span className={`user-type-badge ${
-                            user.tipo === 'ADMIN' ? 'purple' : user.tipo === 'DOCTOR' ? 'blue' : 'green'
+                            user.role === 'admin' ? 'purple' : user.role === 'medico' ? 'blue' : 'green'
                           }`}>
-                            {user.tipo === 'ADMIN' ? 'Administrador' : user.tipo === 'DOCTOR' ? 'Medico' : 'Paciente'}
+                            {user.role === 'admin' ? 'Administrador' : user.role === 'medico' ? 'Medico' : 'Paciente'}
                           </span>
                         </td>
                         <td>
