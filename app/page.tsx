@@ -48,7 +48,6 @@ const teamMembers = [
   { name: "Pedro Henrique Panstein", rm: "RM567358", github: "https://github.com/Pedro-Panstein", linkedin: "https://www.linkedin.com/in/pedro-henrique-panstein-7833bb316/" },
   { name: "Arthur Carlson de Souza Barbosa", rm: "RM567124", github: "https://github.com/arthurcarlson2", linkedin: "" },
   { name: "Filipe Ferraz Alves", rm: "RM567793", github: "https://github.com/filipe-falves", linkedin: "https://www.linkedin.com/in/filipe-ferraz-alves-695109352/" },
-  { name: "Jorge Kenned Ferreira dos Santos", rm: "RM566644", github: "https://github.com/kennedfer", linkedin: "" },
 ]
 
 const technologies = [
@@ -365,28 +364,17 @@ export default function HomePage() {
           >
             <GlassCard className="overflow-hidden p-2">
               <div className="relative aspect-video rounded-lg bg-background/50 flex items-center justify-center border border-cyan-500/20">
-                {/* Placeholder for video embed */}
-                <div className="text-center p-8">
-                  <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30">
-                    <Play className="h-10 w-10 text-cyan-400" />
-                  </div>
-                  <p className="text-muted-foreground">
-                    Incorpore seu vídeo do YouTube aqui
-                  </p>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Substitua este placeholder pelo iframe do YouTube
-                  </p>
-                </div>
-                {/* 
-                  Para incorporar o vídeo, substitua o conteúdo acima por:
-                  <iframe
-                    className="h-full w-full rounded-lg"
-                    src="https://www.youtube.com/embed/SEU_VIDEO_ID"
-                    title="VivaBem - Vídeo Pitch"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                */}
+                <iframe 
+                  width="100%" 
+                  height="100%" 
+                  src="https://www.youtube.com/embed/IssjmvRRhIw" 
+                  title="VivaBem | FIAP Challenge 2025/2026" 
+                  frameBorder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  referrerPolicy="strict-origin-when-cross-origin" 
+                  allowFullScreen
+                  style={{ borderRadius: '0.5rem' }}
+                />
               </div>
             </GlassCard>
           </motion.div>
