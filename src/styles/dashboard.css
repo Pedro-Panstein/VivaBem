@@ -1043,3 +1043,175 @@
     transform: translateY(0);
   }
 }
+
+/* Content Card */
+.content-card {
+  padding: 1.5rem;
+}
+
+.content-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+}
+
+/* Consultas List */
+.consultas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.consulta-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(10, 10, 20, 0.5);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+}
+
+.consulta-item svg {
+  color: var(--primary);
+}
+
+.consulta-info {
+  flex: 1;
+}
+
+.consulta-date {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.consulta-status {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* Sintomas List */
+.sintomas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sintoma-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(10, 10, 20, 0.5);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+}
+
+.sintoma-item svg {
+  color: var(--primary);
+}
+
+.sintoma-item.severity-alta,
+.sintoma-item.severity-critica {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.sintoma-item.severity-alta svg,
+.sintoma-item.severity-critica svg {
+  color: #f87171;
+}
+
+.sintoma-item.severity-media {
+  background: rgba(234, 179, 8, 0.1);
+  border-color: rgba(234, 179, 8, 0.2);
+}
+
+.sintoma-item.severity-media svg {
+  color: #fbbf24;
+}
+
+.sintoma-info {
+  flex: 1;
+}
+
+.sintoma-descricao {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.sintoma-regiao {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* Medicamentos List */
+.medicamentos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.medicamento-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(10, 10, 20, 0.5);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+}
+
+.medicamento-item svg {
+  color: var(--primary);
+}
+
+.medicamento-info {
+  flex: 1;
+}
+
+.medicamento-nome {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.medicamento-dosagem {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* Exames List */
+.exames-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.exame-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(10, 10, 20, 0.5);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+}
+
+.exame-item svg {
+  color: var(--primary);
+}
+
+.exame-info {
+  flex: 1;
+}
+
+.exame-tipo {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.exame-data {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
